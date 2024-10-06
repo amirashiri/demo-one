@@ -3,69 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I am an Interactive Clown !</title>
+    <title>Interactive Clown</title>
     <style>
         #clown {
             position: relative;
-            width: 300px;
+            width: 600px;
         }
-        .sensitive-area {
+        .clickable {
             position: absolute;
             cursor: pointer;
+            opacity: 0;
         }
-        .spin {
-            animation: spin 1s linear;
+        #nose {
+            top: 400px;
+            left: 270px;
+            width: 60px;
+            height: 60px;
         }
-        .wiggle {
-            animation: wiggle 0.5s ease-in-out;
+        #hat {
+            top: 30px;
+            left: 200px;
+            width: 200px;
+            height: 100px;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        #shoes {
+            top: 500px;
+            left: 150px;
+            width: 300px;
+            height: 100px;
         }
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(-10deg); }
-            50% { transform: rotate(10deg); }
-        }
-        @keyframes dance {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(20px); }
-        }
-        .dance {
-            animation: dance 1s ease-in-out;
+        #soundcloud-frame {
+            position: absolute;
+            width: 0;
+            height: 0;
+            visibility: hidden;
         }
     </style>
 </head>
 <body>
-    <h1>I am an Interactive Clown !</h1>
-    <p>Click on my hat or on my tongue and see what happens !</p>
-    
-    <div id="clown-container" style="position: relative;">
+    <h1>Interactive Clown</h1>
+    <div id="clown-container">
         <img id="clown" src="https://i.imgur.com/hNlenRc.png" alt="Clown Image">
-        
-        <!-- Sensitive Areas -->
-        <div class="sensitive-area" id="nose" style="top: 120px; left: 130px; width: 30px; height: 30px;" onclick="honkNose()"></div>
-        <div class="sensitive-area" id="hat" style="top: 20px; left: 100px; width: 100px; height: 50px;" onclick="spinHat()"></div>
-        <div class="sensitive-area" id="bowtie" style="top: 230px; left: 110px; width: 80px; height: 40px;" onclick="clownDance()"></div>
+        <div id="nose" class="clickable" onclick="clickNose()"></div>
+        <div id="hat" class="clickable" onclick="clickHat()"></div>
+        <div id="shoes" class="clickable" onclick="clickShoes()"></div>
     </div>
 
     <script>
-        function honkNose() {
+        function clickNose() {
             const clown = document.getElementById('clown');
-            clown.classList.add('wiggle');
-            setTimeout(() => clown.classList.remove('wiggle'), 500);
+            clown.style.transition = 'transform 0.1s';
+            clown.style.transform = 'rotate(5deg)';
+            setTimeout(() => {
+                clown.style.transform = 'rotate(-5deg)';
+                setTimeout(() => {
+                    clown.style.transform = 'rotate(0deg)';
+                }, 100);
+            }, 100);
+
+            // Randomly select one of the two SoundCloud URLs
+            const soundUrls = [
+                'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nopiforu2/1a-1&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+                'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nopiforu2/2a1&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+                'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nopiforu2/3a1&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+                'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nopiforu2/4a1&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+                'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nopiforu2/5a1&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+                'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nopiforu2/6a1&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+                'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nopiforu2/7a1&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+                'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nopiforu2/8a1&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+                'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nopiforu2/9a1&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true',
+                'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nopiforu2/10a1&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true'
+            ];
+            const selectedUrl = soundUrls[Math.floor(Math.random() * soundUrls.length)];
+
+            // Create and embed SoundCloud iframe
+            const iframe = document.createElement('iframe');
+            iframe.id = 'soundcloud-frame';
+            iframe.width = '100%';
+            iframe.height = '166';
+            iframe.scrolling = 'no';
+            iframe.frameBorder = 'no';
+            iframe.allow = 'autoplay';
+            iframe.src = selectedUrl;
+            document.body.appendChild(iframe);
         }
 
-        function spinHat() {
-            const clown = document.getElementById('clown');
-            clown.classList.add('spin');
-            setTimeout(() => clown.classList.remove('spin'), 1000);
+        function clickHat() {
+            alert("You tipped the clown's hat!");
         }
 
-        function clownDance() {
-            const clown = document.getElementById('clown');
-            clown.classList.add('dance');
-            setTimeout(() => clown.classList.remove('dance'), 1000);
+        function clickShoes() {
+            alert("The clown is doing a funny dance!");
         }
     </script>
 </body>
